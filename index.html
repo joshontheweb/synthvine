@@ -1,0 +1,81 @@
+<doctype !html>
+<html>
+  <head>
+    <style>
+
+      body {
+        color: #fff;
+        text-shadow: 0 0 5px #000;
+        font-family: helvetica 'sans-serif';
+      }
+
+      h3 {
+        font-weight: normal;
+      }
+
+      .video {
+        width: 33%;
+        position: relative;
+        float: left;
+      }
+      
+      .video video {
+        width: 100%;
+      }
+
+      .video h3 {
+        position: absolute;
+        top: 5px;
+        left: 15px;
+        opacity: 1;
+        transition: opacity .25s ease-in-out;
+        -moz-transition: opacity .25s ease-in-out;
+        -webkit-transition: opacity .25s ease-in-out;
+      }
+      
+      .video h3:hover {
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+
+    <script class="video-template" type="text/html">
+      <div class="video">
+        <h3><%= description %></h3>
+        <video src="<%= videoUrl %>" loop></video>
+      </div>
+    </script>
+    
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+    <script>
+      var videoTemplate = _.template($('.video-template').html());
+      $body = $('body');
+    
+      $.ajax({
+        type: 'GET',
+        url: '/feed',
+        success: function(records) {
+          for (var i = 0; i < records.length; i++) {
+            $body.append(videoTemplate(records[i]));
+          }
+          initEvents();
+        }
+      });
+
+      var initEvents = function() {
+        $('video').each(function(index, video) {
+          $(video).bind('mouseenter', function() {
+            this.play();
+          });
+          
+          $(video).bind('mouseleave', function() {
+            this.pause();
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
+
