@@ -65,13 +65,15 @@
       });
 
       var initEvents = function() {
-        $('video').each(function(index, video) {
-          $(video).bind('mouseenter', function() {
-            this.play();
+        $('.video').each(function() {
+          $(this).bind('mouseenter', function() {
+            var video = $(this).find('video')[0];
+            video.play();
           });
           
-          $(video).bind('mouseleave', function() {
-            this.pause();
+          $(this).bind('mouseleave', function() {
+            var video = $(this).find('video')[0];
+            video.pause();
           });
         });
       }
